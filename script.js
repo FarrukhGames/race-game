@@ -7,6 +7,7 @@ let right = draw.line(WIDTH - 30, 0, WIDTH - 30, HEIGHT).stroke({width: 10, colo
 let center = draw.line(WIDTH / 2, 0, WIDTH / 2, HEIGHT).stroke({width: 5, color: "black", dasharray: 10});
 let car = draw.image("img/car.png").height("80px").width("40px").x(WIDTH / 2).y(HEIGHT - 80);
 let obstacle = draw.image("img/wall.png").width("100px").height("20px").move(WIDTH / 2 - 20,20);
+let obstacle2 = draw.image("img/wall2.png").width("100px").height("20px").move(WIDTH / 2 - 150, 110);
 let restartButton = document.querySelector(".restart-button");
 let stepX = 0;
 function getRandomInt(min, max) {
@@ -20,12 +21,21 @@ function roadMove() {
     }
     car.dx(stepX);
     obstacle.dy(3);
+    obstacle2.dy(3);
     if (obstacle.y() > HEIGHT) {
         obstacle.y(-500);
         let randomX = getRandomInt(32, WIDTH - parseInt(obstacle.width()) - 32);
         obstacle.x(randomX);
     }
+    if (obstacle2.y() > HEIGHT) {
+        obstacle2.y(-500);
+        let randomX = getRandomInt(32, WIDTH - parseInt(obstacle2.width()) - 32);
+        obstacle2.x(randomX);
+    }
     if (obstacle.y() + parseInt(obstacle.height()) > car.y() && obstacle.x() + parseInt(obstacle.width()) > car.x() && obstacle.x() < car.x() + parseInt(car.width())) {
+        clearInterval(roadMoveInterval);
+    }
+    if (obstacle2.y() + parseInt(obstacle2.height()) > car.y() && obstacle2.x() + parseInt(obstacle.width()) > car.x() && obstacle2.x() < car.x() + parseInt(car.width())) {
         clearInterval(roadMoveInterval);
     }
 }
