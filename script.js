@@ -44,6 +44,10 @@ function roadMove() {
         clearInterval(roadMoveInterval);
         isCollide = true;
     }
+    if (car.x() + parseInt(car.width()) > WIDTH - 40 || car.x() < 40) {
+        stepX = 0;
+        car.dx(stepX);
+    }
 }
 
 let roadMoveInterval = setInterval(() => {
@@ -68,6 +72,10 @@ restartButton.addEventListener("click", () => {
 });
 
 document.addEventListener("keydown", (event) => {
+    if (car.x() + parseInt(car.width()) > WIDTH - 40 || car.x() < 40) {
+        stepX = 0;
+        car.dx(stepX);
+    }x
     if (event.code == "ArrowRight") {
         stepX = 5;
     }
