@@ -17,6 +17,8 @@ let car = draw.image("img/car.png").height("80px").width("40px").x(WIDTH / 2).y(
 let obstacle = draw.image("img/" + randomWall).width("100px").height("20px").move(WIDTH / 2 - 20,20);
 let obstacle2 = draw.image("img/" + randomCar).width("50px").height("100px").move(WIDTH / 2 - 150, 110);
 let restartButton = document.querySelector(".restart-button");
+let score = 0;
+let scoreText = draw.text(score.toString()).font({size: 50}).fill("white").x(WIDTH - 100);
 let stepX = 0;
 let isCollide = false;
 console.log(randomWall);
@@ -40,6 +42,9 @@ function roadMove() {
             randomX = getRandomInt(32, WIDTH - parseInt(obstacle.width()) - 32);
             obstacle.x(randomX);
         }
+        score = score + 1;
+        scoreText.text(score.toString());
+        console.log(score);
     }
     if (obstacle2.y() > HEIGHT) {
         randomCar = cars[getRandomInt(0, cars.length - 1)];
@@ -51,6 +56,9 @@ function roadMove() {
             randomX = getRandomInt(32, WIDTH - parseInt(obstacle2.width()) - 32);
             obstacle2.x(randomX);
         }
+        score = score + 1;
+        scoreText.text(score.toString());
+        console.log(score);
     }
     if (obstacle.y() + parseInt(obstacle.height()) > car.y() && obstacle.x() + parseInt(obstacle.width()) > car.x() && obstacle.x() < car.x() + parseInt(car.width())) {
         clearInterval(roadMoveInterval);
