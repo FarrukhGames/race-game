@@ -1,19 +1,25 @@
 const WIDTH = 480;
 const HEIGHT = 360;
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+let walls = ["wall.png", "wall2.png", "wall3.png", "wall4.png"];
+let randomWall = walls[getRandomInt(0, walls.length - 1)];
+let cars = ["enemycar.png", "Blue Car.png", "black car.png"];
+let randomCar = cars[getRandomInt(0, cars.length - 1)];
+
 let draw = SVG().addTo("#race").size(WIDTH, HEIGHT);
 let backround = draw.rect(WIDTH, HEIGHT).fill("#DDE3E1");
 let left = draw.line(30, 0, 30, HEIGHT).stroke({width: 10, color: "black"});
 let right = draw.line(WIDTH - 30, 0, WIDTH - 30, HEIGHT).stroke({width: 10, color: "black"});
 let center = draw.line(WIDTH / 2, 0, WIDTH / 2, HEIGHT).stroke({width: 5, color: "black", dasharray: 10});
 let car = draw.image("img/car.png").height("80px").width("40px").x(WIDTH / 2).y(HEIGHT - 80);
-let obstacle = draw.image("img/wall.png").width("100px").height("20px").move(WIDTH / 2 - 20,20);
-let obstacle2 = draw.image("img/Blue Car.png").width("50px").height("100px").move(WIDTH / 2 - 150, 110);
+let obstacle = draw.image("img/" + randomWall).width("100px").height("20px").move(WIDTH / 2 - 20,20);
+let obstacle2 = draw.image("img/" + randomCar).width("50px").height("100px").move(WIDTH / 2 - 150, 110);
 let restartButton = document.querySelector(".restart-button");
 let stepX = 0;
 let isCollide = false;
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+console.log(randomWall);
 function roadMove() {
     if (center.y() == 0) {
         center.dy(10);
@@ -23,16 +29,26 @@ function roadMove() {
     car.dx(stepX);
     obstacle.dy(3);
     obstacle2.dy(3);
+    let randomX;
     if (obstacle.y() > HEIGHT) {
+        randomWall = walls[getRandomInt(0, walls.length - 1)];
+        obstacle.load("img/" + randomWall);
         obstacle.y(-500);
-        let randomX = getRandomInt(32, WIDTH - parseInt(obstacle.width()) - 32);
+        randomX = getRandomInt(32, WIDTH - parseInt(obstacle.width()) - 32);
         obstacle.x(randomX);
+        while (obstacle2.x() < obstacle.x() + parseInt(obstacle.width()) && obstacle2.x() + parseInt(obstacle2.width()) > obstacle.x()){
+            randomX = getRandomInt(32, WIDTH - parseInt(obstacle.width()) - 32);
+            obstacle.x(randomX);
+        }
     }
     if (obstacle2.y() > HEIGHT) {
+        randomCar = cars[getRandomInt(0, cars.length - 1)];
+        obstacle2.load("img/" + randomCar);
         obstacle2.y(-500);
-        let randomX = getRandomInt(32, WIDTH - parseInt(obstacle2.width()) - 32);
+        randomX = getRandomInt(32, WIDTH - parseInt(obstacle2.width()) - 32);
         obstacle2.x(randomX);
-        if (obstacle2.x() < obstacle.x() + parseInt(obstacle.width()) && obstacle2.x() + parseInt(obstacle2.width()) > obstacle.x()){
+        while (obstacle2.x() < obstacle.x() + parseInt(obstacle.width()) && obstacle2.x() + parseInt(obstacle2.width()) > obstacle.x()){
+            randomX = getRandomInt(32, WIDTH - parseInt(obstacle2.width()) - 32);
             obstacle2.x(randomX);
         }
     }
@@ -72,10 +88,6 @@ restartButton.addEventListener("click", () => {
 });
 
 document.addEventListener("keydown", (event) => {
-    if (car.x() + parseInt(car.width()) > WIDTH - 40 || car.x() < 40) {
-        stepX = 0;
-        car.dx(stepX);
-    }x
     if (event.code == "ArrowRight") {
         stepX = 5;
     }
