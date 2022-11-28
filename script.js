@@ -17,11 +17,28 @@ let car = draw.image("img/car.png").height("80px").width("40px").x(WIDTH / 2).y(
 let obstacle = draw.image("img/" + randomWall).width("100px").height("20px").move(WIDTH / 2 - 20,20);
 let obstacle2 = draw.image("img/" + randomCar).width("50px").height("100px").move(WIDTH / 2 - 150, 110);
 let restartButton = document.querySelector(".restart-button");
+let startButton = document.querySelector(".start-button");
 let score = 0;
 let scoreText = draw.text(score.toString()).font({size: 50}).fill("white").x(WIDTH - 100);
 let stepX = 0;
+let wall1 = draw.rect(WIDTH / 2, HEIGHT).fill("#008000");
+let wall2 = draw.rect(WIDTH / 2, HEIGHT).fill("#008000").x(WIDTH / 2);
 let isCollide = false;
 console.log(randomWall);
+let roadMoveInterval;
+startButton.addEventListener("click", () => {  
+    let animationWall1 = setInterval(() => {
+        wall1.dx(-1)
+    });
+    let animationWall2 = setInterval(() => {
+        wall2.dx(1)
+    });
+    setTimeout(() => {
+        roadMoveInterval = setInterval(() => {
+            roadMove();
+        }, 10)
+      }, 2500);
+});
 function roadMove() {
     if (center.y() == 0) {
         center.dy(10);
@@ -78,10 +95,6 @@ function roadMove() {
     }
 }
 
-let roadMoveInterval = setInterval(() => {
-    roadMove();
-}, 10);
-
 restartButton.addEventListener("click", () => {
     draw.clear();
     backround = draw.rect(WIDTH, HEIGHT).fill("#DDE3E1");
@@ -89,9 +102,10 @@ restartButton.addEventListener("click", () => {
     right = draw.line(WIDTH - 30, 0, WIDTH - 30, HEIGHT).stroke({width: 10, color: "black"});
     center = draw.line(WIDTH / 2, 0, WIDTH / 2, HEIGHT).stroke({width: 5, color: "black", dasharray: 10});
     car = draw.image("img/car.png").height("80px").width("40px").x(WIDTH / 2).y(HEIGHT - 80);
-    obstacle = draw.image("img/wall.png").width("100px").height("20px").move(WIDTH / 2 - 20,20);
-    obstacle2 = draw.image("img/Blue Car.png").width("50px").height("100px").move(WIDTH / 2 - 150, 110);
-    restartButton = document.querySelector(".restart-button");
+    obstacle = draw.image("img/" + randomWall).width("100px").height("20px").move(WIDTH / 2 - 20,20);
+    obstacle2 = draw.image("img/" + randomCar).width("50px").height("100px").move(WIDTH / 2 - 150, 110);
+    score = 0;
+    scoreText = draw.text(score.toString()).font({size: 50}).fill("white").x(WIDTH - 100);
     clearInterval(roadMoveInterval);
     roadMoveInterval = setInterval(() => {
         roadMove();
