@@ -85,13 +85,11 @@ function roadMove() {
         clearInterval(roadMoveInterval);
         isCollide = true;
     }
-    if (car.x() < 0 + 40) {
-        console.log("Остановись");
-        stepX = 0;
+    if (car.x() < 35) {
+        car.x(35);
     }
-    if (car.x() + 40 > WIDTH - 40) {
-        console.log("Остановись");
-        stepX = 0;
+    if (car.x() + 40 > WIDTH - 35) {
+        car.x(WIDTH - 75);
     }
 }
 
